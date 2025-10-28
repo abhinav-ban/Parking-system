@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="ui.user.user_ui">
+    <children>
+        <Label text="User Dashboard" layoutX="250" layoutY="30" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+        <Label text="Name:" layoutX="150" layoutY="100"/>
+        <TextField fx:id="nameField" layoutX="250" layoutY="95" prefWidth="200"/>
+
+        <Label text="Mobile No:" layoutX="150" layoutY="140"/>
+        <TextField fx:id="mobileField" layoutX="250" layoutY="135" prefWidth="200"/>
+
+        <Label text="Car No:" layoutX="150" layoutY="180"/>
+        <TextField fx:id="carField" layoutX="250" layoutY="175" prefWidth="200"/>
+
+        <Button text="Register" layoutX="180" layoutY="240" onAction="#registerUser"/>
+        <Button text="Get Receipt" layoutX="320" layoutY="240" onAction="#getReceipt"/>
+    </children>
+</AnchorPane>

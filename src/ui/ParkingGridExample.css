@@ -1,0 +1,10 @@
+.custom-grid{
+    border-color: black;
+    border-width: 10px;
+    border-style: solid;
+    padding:10;
+    -fx-border-color: black;
+    -fx-border-width: 10px;
+    -fx-border-style: solid;
+    -fx-padding: 10;
+}
