@@ -9,7 +9,7 @@ public class Main {
         DatabaseConnection.setCredentials(
             "jdbc:mysql://localhost:3306/smart_parking_system",
             "root",
-            "@bhI8920" 
+            "xxxxxx" 
         );
 
         Scanner scanner = new Scanner(System.in);
