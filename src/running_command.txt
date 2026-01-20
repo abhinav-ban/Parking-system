@@ -1,0 +1,6 @@
+for running with the ui :
+compiling :javac --module-path "lib\openjfx-25_windows-x64_bin-sdk\javafx-sdk-25\lib" --add-modules javafx.controls,javafx.fxml -d bin -cp "bin;lib\mysql-connector-j-9.4.0.jar" src\database\*.java src\models\user\*.java src\models\admin\*.java src\services\AdminServices\*.java src\ui\*.java src\ui\login\*.java
+running : java --module-path "lib\openjfx-25_windows-x64_bin-sdk\javafx-sdk-25\lib" --add-modules javafx.controls,javafx.fxml -cp "bin;lib\mysql-connector-j-9.4.0.jar" ui.App
+
+for running the backend ui : 
+running : java -cp "bin;lib\mysql-connector-j-9.4.0.jar" Main
