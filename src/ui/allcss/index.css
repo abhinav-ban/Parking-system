@@ -1,0 +1,61 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: #f4f6f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    text-align: center;
+    background: white;
+    padding: 40px 60px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+h1 {
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.role-box {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.role-btn {
+    text-decoration: none;
+    padding: 20px 40px;
+    font-size: 18px;
+    border-radius: 8px;
+    color: white;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.role-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.user {
+    background-color: #4CAF50;
+}
+
+.admin {
+    background-color: #3F51B5;
+}
+
+.subtitle {
+    margin-top: 25px;
+    color: #666;
+    font-size: 14px;
+}
