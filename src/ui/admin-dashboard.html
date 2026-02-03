@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Dashboard - Manage parking system users">
+    <title>Admin Dashboard | Smart Parking System</title>
+
+    <!-- Reuse existing styles -->
+    <link rel="stylesheet" href="allcss/index.css">
+    <link rel="stylesheet" href="allcss/admin.css">
+    <link rel="stylesheet" href="allcss/admindashboard.css">
+</head>
+<body>
+<main class="dashboard-container" role="main">
+
+    <!-- HEADER -->
+    <header class="header">
+        <nav aria-label="Breadcrumb navigation">
+            <a href="index.html" class="back-btn">
+                <span aria-hidden="true">←</span> Logout
+            </a>
+        </nav>
+
+        <h1>
+            <span class="sr-only">Admin</span> Dashboard
+        </h1>
+        <p>Monitor and manage parked vehicles</p>
+    </header>
+
+    <!-- TABS -->
+    <nav class="tabs" role="tablist">
+        <button class="tab-btn active"
+                role="tab"
+                aria-selected="true"
+                id="users-tab-btn"
+                onclick="switchTab('users', event)">
+            View Users
+        </button>
+
+        <button class="tab-btn"
+                role="tab"
+                aria-selected="false"
+                id="stats-tab-btn"
+                onclick="switchTab('stats', event)">
+            Statistics
+        </button>
+    </nav>
+
+    <!-- USERS TAB -->
+    <section id="users-tab"
+             class="tab-content active"
+             role="tabpanel"
+             aria-hidden="false">
+
+        <div class="admin-section">
+            <div class="section-header">
+                <h2>Active Parked Vehicles</h2>
+                <button class="submit-btn small" onclick="loadUsers()">🔄 Refresh</button>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="admin-table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Mobile</th>
+                        <th>Car No</th>
+                        <th>Slot</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody id="users-table-body">
+                    <!-- injected by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="admin-result" class="result-area" aria-live="polite"></div>
+        </div>
+    </section>
+
+    <!-- STATS TAB -->
+    <section id="stats-tab"
+             class="tab-content"
+             role="tabpanel"
+             aria-hidden="true">
+
+        <div class="admin-section stats-grid">
+            <div class="stat-card">
+                <h3>Total Slots</h3>
+                <p id="total-slots">100</p>
+            </div>
+            <div class="stat-card">
+                <h3>Occupied</h3>
+                <p id="occupied-slots">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Available</h3>
+                <p id="available-slots">0</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script>
+(function () {
+    'use strict';
+
+    /* ---------- TAB SWITCHING ---------- */
+    window.switchTab = function (tab, event) {
+        document.querySelectorAll('.tab-content').forEach(t => {
+            t.classList.remove('active');
+            t.setAttribute('aria-hidden', 'true');
+        });
+        document.querySelectorAll('.tab-btn').forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-selected', 'false');
+        });
+
+        document.getElementById(tab + '-tab').classList.add('active');
+        document.getElementById(tab + '-tab').setAttribute('aria-hidden', 'false');
+        event.target.classList.add('active');
+        event.target.setAttribute('aria-selected', 'true');
+    };
+
+    /* ---------- MOCK DATA ---------- */
+    let users = [
+        { name: 'Rahul', mobile: '9876543210', car: 'DL3CAF1234', slot: 12 },
+        { name: 'Anita', mobile: '9123456780', car: 'MH12AB9999', slot: 45 }
+    ];
+
+    /* ---------- LOAD USERS ---------- */
+    window.loadUsers = function () {
+        const tbody = document.getElementById('users-table-body');
+        tbody.innerHTML = '';
+
+        users.forEach((u, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${u.name}</td>
+                <td>${u.mobile}</td>
+                <td>${u.car}</td>
+                <td>${u.slot}</td>
+                <td>
+                    <button class="danger-btn"
+                            onclick="deleteUser(${index})">
+                        ❌ Remove
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        updateStats();
+    };
+
+    /* ---------- DELETE USER ---------- */
+    window.deleteUser = function (index) {
+        const result = document.getElementById('admin-result');
+        const removed = users.splice(index, 1);
+
+        result.className = 'result-area success';
+        result.innerHTML = `<p>✅ Removed ${removed[0].car}</p>`;
+
+        loadUsers();
+    };
+
+    /* ---------- STATS ---------- */
+    function updateStats() {
+        const total = 100;
+        const occupied = users.length;
+        document.getElementById('occupied-slots').textContent = occupied;
+        document.getElementById('available-slots').textContent = total - occupied;
+    }
+
+    /* ---------- INIT ---------- */
+    loadUsers();
+})();
+</script>
+</body>
+</html>
+

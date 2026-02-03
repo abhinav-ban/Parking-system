@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="User Dashboard - Register your vehicle or retrieve parking receipt">
+    <title>User Dashboard | Smart Parking System</title>
+    <link rel="stylesheet" href="allcss/index.css">
+    <link rel="stylesheet" href="allcss/user.css">
+</head>
+<body>
+    <main class="dashboard-container" role="main">
+        <header class="header">
+            <nav aria-label="Breadcrumb navigation">
+                <a href="index.html" class="back-btn" aria-label="Return to home page">
+                    <span aria-hidden="true">←</span> Back to Home
+                </a>
+            </nav>
+            <h1>
+		                    <span class="sr-only">User</span> Dashboard
+            </h1>
+            <p>Register your vehicle or retrieve your parking receipt</p>
+        </header>
+
+        <nav class="tabs" role="tablist" aria-label="User dashboard tabs">
+            <button 
+                class="tab-btn active" 
+                role="tab" 
+                aria-selected="true" 
+                aria-controls="register-tab"
+                id="register-tab-btn"
+                onclick="switchTab('register', event)"
+            >
+                Register Vehicle
+            </button>
+            <button 
+                class="tab-btn" 
+                role="tab" 
+                aria-selected="false" 
+                aria-controls="receipt-tab"
+                id="receipt-tab-btn"
+                onclick="switchTab('receipt', event)"
+            >
+                Get Receipt
+            </button>
+        </nav>
+
+        <!-- Register Vehicle Tab -->
+        <section 
+            id="register-tab" 
+            class="tab-content active" 
+            role="tabpanel" 
+            aria-labelledby="register-tab-btn"
+            aria-hidden="false"
+        >
+            <div class="form-section">
+                <h2>Register Your Vehicle</h2>
+                <form id="register-form" method="post" aria-label="Vehicle registration form" novalidate>
+                    <div class="form-group">
+                        <label for="name">
+                            Full Name <span class="required" aria-label="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            required 
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                            aria-required="true"
+                            aria-describedby="name-error"
+                            pattern="[A-Za-z\s]{2,50}"
+                            title="Name should be 2-50 characters and contain only letters"
+                        >
+                        <span id="name-error" class="error-text" role="alert" aria-live="polite"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mobile">
+                            Mobile Number <span class="required" aria-label="required">*</span>
+                        </label>
+                        <input 
+                            type="tel" 
+                            id="mobile" 
+                            name="mobile" 
+                            required 
+                            placeholder="Enter your mobile number"
+                            autocomplete="tel"
+                            aria-required="true"
+                            aria-describedby="mobile-error"
+                            pattern="[0-9]{10,15}"
+                            title="Mobile number should be 10-15 digits"
+                        >
+                        <span id="mobile-error" class="error-text" role="alert" aria-live="polite"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="car-no">
+                            Car Number <span class="required" aria-label="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="car-no" 
+                            name="car-no" 
+                            required 
+                            placeholder="Enter your car number"
+                            aria-required="true"
+                            aria-describedby="car-no-error"
+                            pattern="[A-Za-z0-9]{3,20}"
+                            title="Car number should be 3-20 alphanumeric characters"
+                        >
+                        <span id="car-no-error" class="error-text" role="alert" aria-live="polite"></span>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" aria-label="Submit vehicle registration">
+                        <span class="btn-text">Register Vehicle</span>
+                        <span class="btn-loader" aria-hidden="true" style="display: none;">⏳</span>
+                    </button>
+                </form>
+                <div id="register-result" class="result-area" role="status" aria-live="polite" aria-atomic="true"></div>
+            </div>
+        </section>
+
+        <!-- Get Receipt Tab -->
+        <section 
+            id="receipt-tab" 
+            class="tab-content" 
+            role="tabpanel" 
+            aria-labelledby="receipt-tab-btn"
+            aria-hidden="true"
+        >
+            <div class="form-section">
+                <h2>Retrieve Parking Receipt</h2>
+                <form id="receipt-form" method="get" aria-label="Receipt retrieval form" novalidate>
+                    <div class="form-group">
+                        <label for="receipt-car-no">
+                            Car Number <span class="required" aria-label="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="receipt-car-no" 
+                            name="receipt-car-no" 
+                            required 
+                            placeholder="Enter your car number"
+                            aria-required="true"
+                            aria-describedby="receipt-car-no-error"
+                            pattern="[A-Za-z0-9]{3,20}"
+                            title="Car number should be 3-20 alphanumeric characters"
+                        >
+                        <span id="receipt-car-no-error" class="error-text" role="alert" aria-live="polite"></span>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" aria-label="Retrieve parking receipt">
+                        <span class="btn-text">Get Receipt</span>
+                        <span class="btn-loader" aria-hidden="true" style="display: none;">⏳</span>
+                    </button>
+                </form>
+                <div id="receipt-result" class="result-area" role="status" aria-live="polite" aria-atomic="true"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // Tab switching function
+            function switchTab(tabName, event) {
+                // Hide all tabs
+                document.querySelectorAll('.tab-content').forEach(tab => {
+                    tab.classList.remove('active');
+                    tab.setAttribute('aria-hidden', 'true');
+                });
+                
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-selected', 'false');
+                });
+
+                // Show selected tab
+                const selectedTab = document.getElementById(tabName + '-tab');
+                const selectedBtn = document.getElementById(tabName + '-tab-btn');
+                
+                if (selectedTab && selectedBtn) {
+                    selectedTab.classList.add('active');
+                    selectedTab.setAttribute('aria-hidden', 'false');
+                    selectedBtn.classList.add('active');
+                    selectedBtn.setAttribute('aria-selected', 'true');
+                }
+            }
+
+            // Make switchTab available globally
+            window.switchTab = switchTab;
+
+            // Form validation helper
+            function validateField(input, errorSpan) {
+                const value = input.value.trim();
+                const pattern = input.getAttribute('pattern');
+                let isValid = true;
+                let errorMessage = '';
+
+                if (input.hasAttribute('required') && !value) {
+                    errorMessage = `${input.previousElementSibling.textContent.replace('*', '').trim()} is required`;
+                    isValid = false;
+                } else if (pattern && value) {
+                    const regex = new RegExp(pattern);
+                    if (!regex.test(value)) {
+                        errorMessage = input.getAttribute('title') || 'Invalid format';
+                        isValid = false;
+                    }
+                }
+
+                errorSpan.textContent = errorMessage;
+                return isValid;
+            }
+
+            // Register form handler
+            const registerForm = document.getElementById('register-form');
+            const registerResult = document.getElementById('register-result');
+            
+            registerForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const nameInput = document.getElementById('name');
+                const mobileInput = document.getElementById('mobile');
+                const carNoInput = document.getElementById('car-no');
+                const nameError = document.getElementById('name-error');
+                const mobileError = document.getElementById('mobile-error');
+                const carNoError = document.getElementById('car-no-error');
+                const submitBtn = registerForm.querySelector('.submit-btn');
+                const btnText = submitBtn.querySelector('.btn-text');
+                const btnLoader = submitBtn.querySelector('.btn-loader');
+
+                // Validate all fields
+                const isNameValid = validateField(nameInput, nameError);
+                const isMobileValid = validateField(mobileInput, mobileError);
+                const isCarNoValid = validateField(carNoInput, carNoError);
+
+                if (!isNameValid || !isMobileValid || !isCarNoValid) {
+                    return;
+                }
+
+                // Show loading state
+                submitBtn.disabled = true;
+                btnText.style.display = 'none';
+                btnLoader.style.display = 'inline';
+                registerResult.className = 'result-area';
+                registerResult.innerHTML = '<p>Registering your vehicle...</p>';
+
+                const formData = {
+                    name: nameInput.value.trim(),
+                    mobile: mobileInput.value.trim(),
+                    carNo: carNoInput.value.trim().toUpperCase()
+                };
+
+                // ============================================
+                // TODO: BACKEND INTEGRATION POINT
+                // Replace this section with actual API call:
+                // 
+                // try {
+                //     const response = await fetch('/api/register', {
+                //         method: 'POST',
+                //         headers: { 'Content-Type': 'application/json' },
+                //         body: JSON.stringify(formData)
+                //     });
+                //     
+                //     if (!response.ok) {
+                //         throw new Error('Network response was not ok');
+                //     }
+                //     
+                //     const data = await response.json();
+                //     if (data.success) {
+                //         registerResult.className = 'result-area success';
+                //         registerResult.innerHTML = `
+                //             <h3>✅ Registration Successful!</h3>
+                //             <p><strong>Name:</strong> ${data.user.name}</p>
+                //             <p><strong>Mobile:</strong> ${data.user.mobile}</p>
+                //             <p><strong>Car Number:</strong> ${data.user.carNo}</p>
+                //             <p><strong>Slot Number:</strong> ${data.user.slotId}</p>
+                //             <p>Your vehicle has been registered successfully!</p>
+                //         `;
+                //         registerForm.reset();
+                //     } else {
+                //         registerResult.className = 'result-area error';
+                //         registerResult.innerHTML = `<h3>❌ Registration Failed</h3><p>${data.message}</p>`;
+                //     }
+                // } catch (error) {
+                //     registerResult.className = 'result-area error';
+                //     registerResult.innerHTML = `<h3>❌ Error</h3><p>Connection error. Please try again.</p>`;
+                // } finally {
+                //     submitBtn.disabled = false;
+                //     btnText.style.display = 'inline';
+                //     btnLoader.style.display = 'none';
+                // }
+                // ============================================
+
+                // MOCK RESPONSE - Remove when backend is connected
+                setTimeout(() => {
+                    const mockSlotId = Math.floor(Math.random() * 100) + 1;
+                    registerResult.className = 'result-area success';
+                    registerResult.innerHTML = `
+                        <h3>✅ Registration Successful!</h3>
+                        <p><strong>Name:</strong> ${formData.name}</p>
+                        <p><strong>Mobile:</strong> ${formData.mobile}</p>
+                        <p><strong>Car Number:</strong> ${formData.carNo}</p>
+                        <p><strong>Slot Number:</strong> ${mockSlotId}</p>
+                        <p>Your vehicle has been registered successfully!</p>
+                    `;
+                    registerForm.reset();
+                    submitBtn.disabled = false;
+                    btnText.style.display = 'inline';
+                    btnLoader.style.display = 'none';
+                }, 800);
+            });
+
+            // Real-time validation for register form
+            ['name', 'mobile', 'car-no'].forEach(fieldId => {
+                const input = document.getElementById(fieldId);
+                const errorSpan = document.getElementById(fieldId + '-error');
+                input.addEventListener('blur', () => validateField(input, errorSpan));
+                input.addEventListener('input', () => {
+                    if (errorSpan.textContent) {
+                        errorSpan.textContent = '';
+                    }
+                });
+            });
+
+            // Receipt form handler
+            const receiptForm = document.getElementById('receipt-form');
+            const receiptResult = document.getElementById('receipt-result');
+            
+            receiptForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const carNoInput = document.getElementById('receipt-car-no');
+                const carNoError = document.getElementById('receipt-car-no-error');
+                const submitBtn = receiptForm.querySelector('.submit-btn');
+                const btnText = submitBtn.querySelector('.btn-text');
+                const btnLoader = submitBtn.querySelector('.btn-loader');
+
+                // Validate field
+                if (!validateField(carNoInput, carNoError)) {
+                    return;
+                }
+
+                // Show loading state
+                submitBtn.disabled = true;
+                btnText.style.display = 'none';
+                btnLoader.style.display = 'inline';
+                receiptResult.className = 'result-area';
+                receiptResult.innerHTML = '<p>Retrieving your receipt...</p>';
+
+                const carNo = carNoInput.value.trim().toUpperCase();
+
+                // ============================================
+                // TODO: BACKEND INTEGRATION POINT
+                // Replace this section with actual API call:
+                // 
+                // try {
+                //     const response = await fetch(`/api/receipt/${encodeURIComponent(carNo)}`, {
+                //         method: 'GET'
+                //     });
+                //     
+                //     if (!response.ok) {
+                //         throw new Error('Network response was not ok');
+                //     }
+                //     
+                //     const data = await response.json();
+                //     if (data.success) {
+                //         receiptResult.className = 'result-area success';
+                //         receiptResult.innerHTML = `
+                //             <h3>📋 Parking Receipt</h3>
+                //             <p><strong>THANK YOU!</strong></p>
+                //             <p>Your car is parked at <strong>Slot #${data.receipt.slotId}</strong></p>
+                //             <p><strong>Car Number:</strong> ${data.receipt.carNo}</p>
+                //             <p><strong>Name:</strong> ${data.receipt.name}</p>
+                //             <p><strong>Mobile:</strong> ${data.receipt.mobile}</p>
+                //         `;
+                //     } else {
+                //         receiptResult.className = 'result-area error';
+                //         receiptResult.innerHTML = `<h3>❌ Not Found</h3><p>${data.message}</p>`;
+                //     }
+                // } catch (error) {
+                //     receiptResult.className = 'result-area error';
+                //     receiptResult.innerHTML = `<h3>❌ Error</h3><p>Connection error. Please try again.</p>`;
+                // } finally {
+                //     submitBtn.disabled = false;
+                //     btnText.style.display = 'inline';
+                //     btnLoader.style.display = 'none';
+                // }
+                // ============================================
+
+                // MOCK RESPONSE - Remove when backend is connected
+                setTimeout(() => {
+                    receiptResult.className = 'result-area success';
+                    receiptResult.innerHTML = `
+                        <h3>📋 Parking Receipt</h3>
+                        <p><strong>THANK YOU!</strong></p>
+                        <p>Your car is parked at <strong>Slot #${Math.floor(Math.random() * 100) + 1}</strong></p>
+                        <p><strong>Car Number:</strong> ${carNo}</p>
+                    `;
+                    submitBtn.disabled = false;
+                    btnText.style.display = 'inline';
+                    btnLoader.style.display = 'none';
+                }, 800);
+            });
+
+            // Real-time validation for receipt form
+            const receiptCarNoInput = document.getElementById('receipt-car-no');
+            const receiptCarNoError = document.getElementById('receipt-car-no-error');
+            receiptCarNoInput.addEventListener('blur', () => validateField(receiptCarNoInput, receiptCarNoError));
+            receiptCarNoInput.addEventListener('input', () => {
+                if (receiptCarNoError.textContent) {
+                    receiptCarNoError.textContent = '';
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

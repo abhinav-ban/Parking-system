@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Login - Smart Parking System Administration Panel">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Login | Smart Parking System</title>
+    <link rel="stylesheet" href="allcss/adminlogin.css">
+</head>
+<body>
+    <main class="login-container" role="main">
+        <nav aria-label="Breadcrumb navigation">
+            <a href="index.html" class="back-btn" aria-label="Return to home page">
+                <span aria-hidden="true">←</span> Back to Home
+            </a>
+        </nav>
+        
+        <header class="login-header">
+            <h1>
+                <span aria-hidden="true">🛠</span>
+                <span class="sr-only">Admin</span> Login
+            </h1>
+            <p>Enter your credentials to access the admin dashboard</p>
+        </header>
+
+        <form id="login-form" method="post" aria-label="Admin login form" novalidate>
+            <div class="form-group">
+                <label for="username">
+                    Username <span class="required" aria-label="required">*</span>
+                </label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    required 
+                    placeholder="Enter your username" 
+                    autofocus
+                    autocomplete="username"
+                    aria-required="true"
+                    aria-describedby="username-error"
+                >
+                <span id="username-error" class="error-text" role="alert" aria-live="polite"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">
+                    Password <span class="required" aria-label="required">*</span>
+                </label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    required 
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    aria-required="true"
+                    aria-describedby="password-error"
+                >
+                <span id="password-error" class="error-text" role="alert" aria-live="polite"></span>
+            </div>
+            
+            <button type="submit" class="login-btn" aria-label="Submit login form">
+                <span class="btn-text">Login</span>
+                <span class="btn-loader" aria-hidden="true" style="display: none;">⏳</span>
+            </button>
+            
+            <div id="error-message" class="error-message" role="alert" aria-live="assertive" aria-atomic="true"></div>
+        </form>
+    </main>
+
+    <script>
+        (function() {
+            'use strict';
+            
+            const loginForm = document.getElementById('login-form');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const errorDiv = document.getElementById('error-message');
+            const submitBtn = loginForm.querySelector('.login-btn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const btnLoader = submitBtn.querySelector('.btn-loader');
+
+            // Form validation
+            function validateForm() {
+                let isValid = true;
+                const usernameError = document.getElementById('username-error');
+                const passwordError = document.getElementById('password-error');
+
+                // Reset errors
+                usernameError.textContent = '';
+                passwordError.textContent = '';
+                errorDiv.classList.remove('show');
+
+                // Validate username
+                if (!usernameInput.value.trim()) {
+                    usernameError.textContent = 'Username is required';
+                    isValid = false;
+                } else if (usernameInput.value.trim().length < 3) {
+                    usernameError.textContent = 'Username must be at least 3 characters';
+                    isValid = false;
+                }
+
+                // Validate password
+                if (!passwordInput.value) {
+                    passwordError.textContent = 'Password is required';
+                    isValid = false;
+                } else if (passwordInput.value.length < 4) {
+                    passwordError.textContent = 'Password must be at least 4 characters';
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            // Real-time validation
+            usernameInput.addEventListener('blur', validateForm);
+            passwordInput.addEventListener('blur', validateForm);
+
+            // Form submission
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                if (!validateForm()) {
+                    return;
+                }
+
+                // Show loading state
+                submitBtn.disabled = true;
+                btnText.style.display = 'none';
+                btnLoader.style.display = 'inline';
+                errorDiv.classList.remove('show');
+
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value;
+
+                // ============================================
+                // TODO: BACKEND INTEGRATION POINT
+                // Replace this section with actual API call:
+                // 
+                // try {
+                //     const response = await fetch('/api/admin/login', {
+                //         method: 'POST',
+                //         headers: { 'Content-Type': 'application/json' },
+                //         body: JSON.stringify({ username, password })
+                //     });
+                //     
+                //     if (!response.ok) {
+                //         throw new Error('Network response was not ok');
+                //     }
+                //     
+                //     const data = await response.json();
+                //     if (data.success) {
+                //         // Store token/session if needed
+                //         localStorage.setItem('adminToken', data.token);
+                //         window.location.href = 'admin-dashboard.html';
+                //     } else {
+                //         errorDiv.textContent = data.message || 'Invalid credentials';
+                //         errorDiv.classList.add('show');
+                //     }
+                // } catch (error) {
+                //     errorDiv.textContent = 'Connection error. Please try again.';
+                //     errorDiv.classList.add('show');
+                // } finally {
+                //     submitBtn.disabled = false;
+                //     btnText.style.display = 'inline';
+                //     btnLoader.style.display = 'none';
+                // }
+                // ============================================
+
+                // MOCK AUTHENTICATION - Remove when backend is connected
+                // Default credentials: admin/1234 (for testing only)
+                setTimeout(() => {
+                    if (username === 'admin' && password === '1234') {
+                        // Redirect to admin dashboard
+                        window.location.href = 'admin-dashboard.html';
+                    } else {
+                        errorDiv.textContent = 'Invalid username or password. Please try again.';
+                        errorDiv.classList.add('show');
+                        submitBtn.disabled = false;
+                        btnText.style.display = 'inline';
+                        btnLoader.style.display = 'none';
+                    }
+                }, 800);
+            });
+
+            // Clear errors on input
+            usernameInput.addEventListener('input', function() {
+                document.getElementById('username-error').textContent = '';
+            });
+            
+            passwordInput.addEventListener('input', function() {
+                document.getElementById('password-error').textContent = '';
+            });
+        })();
+    </script>
+</body>
+</html>
