@@ -11,13 +11,13 @@ public class DatabaseConnection {
     private static String user;
     private static String password;
     
-    public static void MatrixRepresentation(String id) throws SQLException{
+    /*public static void MatrixRepresentation(String id) throws SQLException{
         String row_sql = "select row_index from matrix where id=?"; 
         String col_sql = "select col_index from matrix where id = ?";
         try(Connection con= getConnection(); PreparedStatement ps = con.prepareStatement(row_sql)){
             
         }
-    }
+    }*/
 
     public static void setCredentials(String url, String user, String password) {
         DatabaseConnection.url = url;
