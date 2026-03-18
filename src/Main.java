@@ -1,16 +1,16 @@
 import java.util.Scanner;
 import database.DatabaseConnection;
-//import ui.user.user_backend_ui;
-//import ui.admin.admin_backend_ui;
+import ui.user_backend_ui;
+import ui.admin_backend_ui;
 
 public class Main {
     public static void main(String[] args) {
         // Set up database connection
+        
         DatabaseConnection.setCredentials(
-            ConfigLoader.get("db.url");
-            ConfigLoader.get("db.user");
-            ConfigLoader.get("db.password");
-
+            ConfigLoader.get("db.url"),
+            ConfigLoader.get("db.user"),
+            ConfigLoader.get("db.password")
         );
 
         Scanner scanner = new Scanner(System.in);
