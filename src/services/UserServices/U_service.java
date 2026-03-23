@@ -4,9 +4,9 @@ import models.user.UserModel;
 import java.sql.SQLException;
 
 public class U_service {
-    public void registerUser(String name, String mobile, String carNo) throws SQLException {
-        UserModel user = new UserModel(name, mobile, carNo);
-        DatabaseConnection.Insertion(user);
+    public void registerUser(String name, String mobile, String carNo,String slot) throws SQLException {
+        UserModel user = new UserModel(name, mobile, carNo, slot);
+        DatabaseConnection.Inserting_user(user);
         System.out.println("User registered successfully!");
     }
     public void printReceiptByCarNo(String carNo) throws SQLException {

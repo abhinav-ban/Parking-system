@@ -37,9 +37,11 @@ public class user_backend_ui {
         String mobile = scanner.nextLine();
         System.out.print("Enter your car number: ");
         String carNo = scanner.nextLine();
+        System.out.print("Enter desired parking slot: ");
+        String slot = scanner.nextLine();
 
         try {
-            userService.registerUser(name, mobile, carNo);
+            userService.registerUser(name, mobile, carNo,slot);
         } catch (SQLException e) {
             System.out.println("Error registering user. Please try again.");
             e.printStackTrace();

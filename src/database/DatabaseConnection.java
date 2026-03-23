@@ -37,13 +37,17 @@ public class DatabaseConnection {
         return DriverManager.getConnection(url, user, password);
     }
     
-    public static void Insertion(UserModel user) throws SQLException{
+    public static void Inserting_user(UserModel user) throws SQLException{
         String sql = "insert into user_info(name,ph_no,car_no) values (?,?,?) ";
-        try (Connection con= getConnection(); PreparedStatement ps = con.prepareStatement(sql)){
+        String sql2 = "insert into parking_slots(vehicle_number) values(?)";
+        try (Connection con= getConnection(); PreparedStatement ps = con.prepareStatement(sql);PreparedStatement ps1 = con.prepareStatement(sql2)){
             ps.setString(1, user.getName());
             ps.setString(2, user.getMobileNo());
             ps.setString(3, user.getCarNo());
+            ps1.setString(1, user.getCarNo());
+            ps1.setString(2, user.getSlot());
             ps.executeUpdate();
+            ps1.executeUpdate();
         }
     }
     public static UserModel GUBCar_no(String car_n) throws SQLException{
@@ -55,7 +59,8 @@ public class DatabaseConnection {
                 UserModel user = new UserModel(
                     rs.getString("name"),
                     rs.getString("ph_no"),
-                    rs.getString("car_no")
+                    rs.getString("car_no"),
+                    rs.getString("slot")
                     );
                     user.setId(rs.getString("id"));
                     return user;
