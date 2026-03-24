@@ -11,8 +11,9 @@ public class U_service {
     }
     public void printReceiptByCarNo(String carNo) throws SQLException {
         UserModel user = DatabaseConnection.GUBCar_no(carNo);
+        //UserModel slot = DatabaseConnection.GUBCar_no(slotno);
         if (user != null) {
-            System.out.println("THANK YOU " + user.getName() + "! YOUR CAR IS AT SLOT " + user.getId());
+            System.out.println("THANK YOU " + user.getName() + "! YOUR CAR IS AT SLOT " + user.getSlot());
         } else {
             System.out.println("User not found!");
         }

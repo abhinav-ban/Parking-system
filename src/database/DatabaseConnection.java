@@ -1,4 +1,6 @@
 package database;
+import java.time.LocalDateTime;
+import java.time.Duration;
 import java.sql.*;
 
 import models.user.UserModel;
@@ -28,18 +30,13 @@ public class DatabaseConnection {
         System.out.println("connecting with:"+url);
     }
     
-   
-    DatabaseConnection(){
-        
-    }
-    
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url, user, password);
     }
     
     public static void Inserting_user(UserModel user) throws SQLException{
-        String sql = "insert into user_info(name,ph_no,car_no) values (?,?,?) ";
-        String sql2 = "insert into parking_slots(vehicle_number) values(?)";
+        String sql = "insert into current_user_info(name,ph_no,car_no) values (?,?,?) ";
+        String sql2 = "insert into parking_slots(vehicle_number,slot_no) values(?,?)";
         try (Connection con= getConnection(); PreparedStatement ps = con.prepareStatement(sql);PreparedStatement ps1 = con.prepareStatement(sql2)){
             ps.setString(1, user.getName());
             ps.setString(2, user.getMobileNo());
@@ -51,17 +48,31 @@ public class DatabaseConnection {
         }
     }
     public static UserModel GUBCar_no(String car_n) throws SQLException{
-        String sql = "select * from user_info where car_no=?";
-        try(Connection con= getConnection(); PreparedStatement ps = con.prepareStatement(sql)){
+        LocalDateTime time = LocalDateTime.now();
+        String sql = "select * from current_user_info where car_no=?";
+        String sql1 = "select * from parking_slots where vehicle_number=?";
+        String sql2 = "update parking_slots set exit_time=? where vehicle_number = ?";
+        try(Connection con= getConnection();
+        PreparedStatement ps = con.prepareStatement(sql);
+        PreparedStatement ps1 = con.prepareStatement(sql1);
+        PreparedStatement ps2 = con.prepareStatement(sql2)){
+            
             ps.setString(1, car_n);
+            ps1.setString(1, car_n);
+            ps2.setTimestamp(1, java.sql.Timestamp.valueOf(time));
+            ps2.setString(2, car_n);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()){
+            ResultSet r = ps1.executeQuery();
+            int rs2 = ps2.executeUpdate();
+            if(rs.next() && r.next()){
                 UserModel user = new UserModel(
                     rs.getString("name"),
                     rs.getString("ph_no"),
                     rs.getString("car_no"),
-                    rs.getString("slot")
+                    r.getString("slot_no")
+
                     );
+                  
                     user.setId(rs.getString("id"));
                     return user;
             }
@@ -81,9 +92,7 @@ public class DatabaseConnection {
         }
         return false ;
     }
-
-
-
+    
     public static int deleteUserById(String table, String id) throws SQLException {
         String sql = "DELETE FROM " + table + " WHERE id = ?";
         try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -91,7 +100,6 @@ public class DatabaseConnection {
             return ps.executeUpdate(); // returns number of rows deleted
         }
     }
-
 
     public static ResultSet getUserInfoById(String table, String id) throws SQLException {
         String sql = "SELECT * FROM " + table + " WHERE id = ?";
