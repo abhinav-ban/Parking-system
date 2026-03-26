@@ -7,3 +7,6 @@ bin/
 
 #for jar file
 lib/
+
+#for config files
+config

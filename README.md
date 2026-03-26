@@ -210,6 +210,4 @@ Admin analytics dashboard
 
 Name	            Roll Number	        Role
 Abhinav Ban	        RA2411026030209	    Project Lead and System Architect
-Sachin Thuwal	    RA2411026030189	    Developer
-Ribhav Shrivastav	RA2411026030184	    Developer
-Shivang Singh	    RA2411026030189	    Developer
+

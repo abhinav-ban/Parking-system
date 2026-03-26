@@ -8,11 +8,11 @@ public class A_service {
         try {
             return DatabaseConnection.verifyAdminLogin(username, password);
         } catch (SQLException e) {
-            System.out.println("Error verifying admin login!");
             e.printStackTrace();
             return false;
         }
     }
+    
     public boolean deleteUser(String table, String id) {
         try {
             int rowsDeleted = DatabaseConnection.deleteUserById(table, id);
@@ -23,7 +23,6 @@ public class A_service {
             return false;
         }
     }
-    
     
     public AdminModel getUserInfo(String table, String id) {
         try (ResultSet rs = DatabaseConnection.getUserInfoById(table, id)) {
@@ -37,7 +36,6 @@ public class A_service {
                 return info;
             }
         } catch (SQLException e) {
-            System.out.println("Error fetching user info!");
             e.printStackTrace();
         }
         return null;
