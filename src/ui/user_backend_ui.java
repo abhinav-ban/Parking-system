@@ -54,6 +54,7 @@ public class user_backend_ui {
 
         try {
             userService.printReceiptByCarNo(carNo);
+            userService.fair_calculation(carNo);
         } catch (SQLException e) {
             System.out.println("Error fetching receipt. Please try again.");
             e.printStackTrace();

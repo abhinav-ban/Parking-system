@@ -26,6 +26,7 @@ public class DatabaseConnection {
         DatabaseConnection.user = user;
         DatabaseConnection.password = password;
     }
+
     public static void connect(){
         System.out.println("connecting with:"+url);
     }
@@ -46,6 +47,28 @@ public class DatabaseConnection {
             ps.executeUpdate();
             ps1.executeUpdate();
         }
+    }
+
+    public static UserModel fair(String car_n) throws SQLException{
+        String exit = "select exit_time from parking_slots where vehicle_number = ?";
+        String entry = "select entry_time from parking_slots where vehicle_number = ?";
+        try(Connection con = getConnection();
+            PreparedStatement ps = con.prepareStatement(entry);
+            PreparedStatement ps1 = con.prepareStatement(exit)
+        ){
+            ps.setString(1, car_n);
+            ps1.setString(1, car_n);
+            ResultSet rs  = ps.executeQuery();
+            ResultSet rs1 = ps1.executeQuery();
+            if(rs.next() && rs1.next()){
+                UserModel u = new UserModel(
+                rs.getTimestamp("entry_time"),
+                rs1.getTimestamp("exit_time"));
+                return u;
+            }
+            return null;
+        }
+        
     }
     public static UserModel GUBCar_no(String car_n) throws SQLException{
         LocalDateTime time = LocalDateTime.now();
