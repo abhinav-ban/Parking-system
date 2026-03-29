@@ -20,10 +20,12 @@ public class U_service {
             return false;
         }
     }
+    
     public UserModel printReceiptByCarNo(String carNo) throws SQLException {
         return DatabaseConnection.GUBCar_no(carNo);
 
     }
+
     public long fair_calculation(String car_no) throws SQLException{
         UserModel fair = DatabaseConnection.fair(car_no);
         if(fair == null){
@@ -38,5 +40,5 @@ public class U_service {
             throw new RuntimeException("Your credentials are wrong!");
         }
     }
-    
+
 }

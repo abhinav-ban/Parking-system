@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PARKING SYSTEM — Login</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Permanent+Marker&family=Russo+One&display=swap" rel="stylesheet">
+
+  <!-- Login styles -->
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       PAGE WRAPPER
+       ============================================================ -->
+  <div class="page">
+    <div class="cw" id="cw">
+
+      <!-- Yellow caution tape — top -->
+      <div class="tape-top"></div>
+
+      <!-- Purple tape — bottom -->
+      <div class="tape-bot"></div>
+
+      <!-- Spinning badge -->
+      <div class="badge">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="36" fill="#f0e835" stroke="#000" stroke-width="3"/>
+          <circle cx="40" cy="40" r="29" fill="none"    stroke="#000" stroke-width="1" stroke-dasharray="3 2"/>
+          <circle cx="40" cy="40" r="9"  fill="none"    stroke="#000" stroke-width="2"/>
+          <text font-family="Permanent Marker, cursive" font-size="8" fill="#0a0800" text-anchor="middle">
+            <tspan x="40" dy="22">FREE</tspan>
+            <tspan x="40" dy="11">PARK</tspan>
+            <tspan x="40" dy="11">ZONE</tspan>
+          </text>
+        </svg>
+      </div>
+
+      <!-- ======================================================
+           LOGIN CARD
+           ====================================================== -->
+      <div class="card" id="card">
+
+        <!-- Title -->
+        <div class="tz">
+          <div class="title-ghost">PARKING<br>SYSTEM</div>
+          <div class="title-main">PARKING<br>SYSTEM</div>
+          <div class="title-sub">⬛ access point · slot control ⬛</div>
+        </div>
+
+        <!-- Yellow divider -->
+        <div class="divider"></div>
+
+        <!-- Role selector -->
+        <div class="roles">
+          <button class="role-btn active" id="roleUser"  onclick="setRole('user', this)">🚗 DRIVER</button>
+          <button class="role-btn"        id="roleAdmin" onclick="setRole('admin', this)">🔑 WARDEN</button>
+        </div>
+
+        <!-- Username -->
+        <div class="field">
+          <div class="field-label">
+            <span class="label-dot green"></span>
+            Vehicle Tag / Username
+          </div>
+          <div class="input-row">
+            <div class="input-prefix">@</div>
+            <input
+              type="text"
+              id="uname"
+              placeholder="enter your tag..."
+              autocomplete="username"
+            >
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+          <div class="field-label">
+            <span class="label-dot yellow"></span>
+            Secret Code / Password
+          </div>
+          <div class="input-row">
+            <div class="input-prefix">🔒</div>
+            <input
+              type="password"
+              id="pw"
+              placeholder="your secret code..."
+              autocomplete="current-password"
+            >
+            <button class="eye-btn" id="eyeBtn" onclick="togglePw()" type="button">👁</button>
+          </div>
+        </div>
+
+        <!-- Submit button -->
+        <div class="btn-wrap">
+          <div class="btn" id="btn" onclick="doLogin(event)">ROLL IN &nbsp;→</div>
+        </div>
+
+        <!-- Status message -->
+        <div class="status" id="status"></div>
+
+        <!-- Footer links -->
+        <div class="footer-row">
+          New? <a href="register.html">Register your ride</a>
+          &nbsp;·&nbsp;
+          <a href="forgot.html">Lost code?</a>
+        </div>
+
+      </div><!-- /card -->
+    </div><!-- /cw -->
+  </div><!-- /page -->
+
+  <!-- Login logic -->
+  <script src="login.js"></script>
+
+</body>
+</html>

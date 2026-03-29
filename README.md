@@ -208,6 +208,6 @@ Admin analytics dashboard
 👥 Contributors
 
 
-Name	            Roll Number	        Role
-Abhinav Ban	        RA2411026030209	    Project Lead and System Architect
+Name	        Role
+Abhinav Ban	    Project Lead and System Architect
 
